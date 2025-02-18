@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('full_name');
+            $table->string('display_name');
+            $table->string('phone_number');
+            $table->string('profile_picture')->nullable();
+            $table->enum('role', ['customer', 'business', 'admin']);
+            $table->enum('status', ['approved', 'pending', 'rejected', 'removed'])->default('pending'); // removed = deactivated
+            // $table->integer('business_id')->nullable(); //if business
+            $table->foreignId('business_id')->nullable()->constrained('businesses')->onDelete('set null');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
